@@ -13,6 +13,12 @@ import {
 
 function App() {
   const [todos, setTodos] = useState([]);
+  const [darkMode, setDarkMode] = useState(false);
+
+  // Toggle Dark Mode
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
+  }, [darkMode]);
 
   // Fetch Todos from Firebase
   useEffect(() => {
@@ -52,20 +58,29 @@ function App() {
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-100 dark:bg-zinc-950 transition-colors duration-300">
       <NewTodo onSubmit={addTodo} />
-      <h1 className="text-3xl text-center">Todos List</h1>
-      <div className="max-w-lg mx-auto">
-        <ul className="list bg-white p-4 rounded-lg shadow-md">
+      <h1 className="text-3xl text-center dark:text-white">Todos List</h1>
+      <div className="max-w-lg mx-auto mt-6">
+        <ul className="bg-white dark:bg-zinc-900 p-4 rounded-lg shadow-md">
           {todos.map((todo) => (
-            <li key={todo.id} className="flex items-center gap-4 p-2 border-b border-gray-300">
+            <li
+              key={todo.id}
+              className="flex items-center gap-4 p-2 border-b border-gray-300 dark:border-zinc-700"
+            >
               <input
                 type="checkbox"
                 checked={todo.completed}
                 onChange={(e) => toggleTodo(todo.id, e.target.checked)}
-                className="w-5 h-5 rounded-md border-gray-400 cursor-pointer transition-all focus:ring-2 focus:ring-black checked:bg-black"
+                className="w-5 h-5 rounded-md border-gray-400 cursor-pointer transition-all focus:ring-2 focus:ring-black dark:focus:ring-white checked:bg-black dark:checked:bg-white"
               />
-              <span className={`text-lg ${todo.completed ? "line-through text-gray-500" : "text-black"}`}>
+              <span
+                className={`text-lg ${
+                  todo.completed
+                    ? "line-through text-gray-500 dark:text-gray-400"
+                    : "text-black dark:text-white"
+                }`}
+              >
                 {todo.title}
               </span>
               <button
@@ -78,7 +93,7 @@ function App() {
           ))}
         </ul>
       </div>
-    </>
+    </div>
   );
 }
 
